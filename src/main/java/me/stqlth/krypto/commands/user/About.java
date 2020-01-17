@@ -14,17 +14,15 @@ import java.awt.*;
 
 public class About extends Command {
 
-    private KryptoConfig kryptoConfig;
     private GetMessageInfo getMessageInfo;
 
-    public About(KryptoConfig kryptoConfig, GetMessageInfo getMessageInfo)
+    public About( GetMessageInfo getMessageInfo)
     {
         this.name = "about";
         this.aliases = new String[]{"botabout","hi"};
         this.help = "View information about Krypto.";
         this.category = new Category("Info");
 
-        this.kryptoConfig = kryptoConfig;
         this.getMessageInfo = getMessageInfo;
     }
 
@@ -35,7 +33,7 @@ public class About extends Command {
         EmbedBuilder builder = new EmbedBuilder();
         TextChannel channel = event.getTextChannel();
 
-        builder.setDescription("Hello! I am **Krypto**, a bot built by **Stqlth** with help from **NovaKevin**!"+
+        builder.setDescription("Hello! I am <@634452930166259732>, a bot built by <@478288246858711040> with help from <@212772875793334272>!"+
 //                "\nMy awesome logo was designed by **HunterDraxi**!" +
                 "\n"+
                 "\nI was written for Discord in Java, using the JDA library ("+ JDAInfo.VERSION+")"+
@@ -45,7 +43,7 @@ public class About extends Command {
                 "\nType `" + getMessageInfo.getPrefix(g) + "help` and I'll DM you a list of commands you can use!"+
 //                "\nSee some of my other stats with `" + getMessageInfo.getPrefix(g) + "stats`"+
                 "\n"+
-                "\nFor additional help, contact **Stqlth** (ID:"+ kryptoConfig.getOwnerId()+")\n")
+                "\nFor additional help, contact <@478288246858711040>")
                 .setColor(Color.decode("#00e1ff"));
         channel.sendMessage(builder.build()).queue();
 

@@ -19,28 +19,27 @@ public class JoinLeaveMessages extends ListenerAdapter {
         TextChannel channel = event.getGuild().getTextChannels().stream().filter(textChannel -> textChannel.getName().toLowerCase().contains("role-call")).findFirst().orElse(null);
         if (channel == null) return;
 
-        builder.setTitle("**Welcome to the Kryptonian Discord!**")
+        builder.setTitle("**Welcome to the " + event.getGuild().getName() + " Discord!**")
             .setDescription("Vist " + channel.getAsMention() + " to select yours roles " + event.getMember().getUser().getName())
             .setColor( Color.decode("#34f922"))
             .setFooter("Enjoy your stay!", user.getAvatarUrl());
-        TextChannel target = event.getGuild().getTextChannels().stream().filter(tchannel -> tchannel.getName().toLowerCase().contains("join-leave")).findFirst().orElse(null);
+        event.getGuild().getTextChannels().stream().filter(tchannel -> tchannel.getName().toLowerCase().contains("join-leave")).findFirst()
+                .ifPresent(target -> Objects.requireNonNull(event.getGuild().getTextChannelById(target.getId())).sendMessage(builder.build()).queue());
 
-        if (target != null)
-            Objects.requireNonNull(event.getGuild().getTextChannelById(target.getId())).sendMessage(builder.build()).queue();
     }
 
     public void leaveMessage(GuildMemberLeaveEvent event) {
         EmbedBuilder builder = new EmbedBuilder();
         User user = event.getUser();
 
-        TextChannel channel = event.getGuild().getTextChannels().stream().filter(textChannel -> textChannel.getName().toLowerCase().contains("role-call")).findFirst().orElse(null);
+        TextChannel channel = event.getGuild().getTextChannels().stream().filter(textChannel ->
+                textChannel.getName().toLowerCase().contains("role-call")).findFirst().orElse(null);
         if (channel == null) return;
 
         builder.setDescription("Goodbye " + user.getAsTag() + "!")
                 .setColor( Color.decode("#EA2027"));
-        TextChannel target = event.getGuild().getTextChannels().stream().filter(tchannel -> tchannel.getName().toLowerCase().contains("join-leave")).findFirst().orElse(null);
+        event.getGuild().getTextChannels().stream().filter(tchannel -> tchannel.getName().toLowerCase().contains("join-leave")).findFirst()
+                .ifPresent(target -> Objects.requireNonNull(event.getGuild().getTextChannelById(target.getId())).sendMessage(builder.build()).queue());
 
-        if (target != null)
-            Objects.requireNonNull(event.getGuild().getTextChannelById(target.getId())).sendMessage(builder.build()).queue();
     }
 }

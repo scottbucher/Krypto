@@ -91,7 +91,7 @@ public class Krypto {
         Command[] commands = new Command[]{
                 // Info
                 new Hello(waiter),
-                new About(kryptoConfig, getMessageInfo),
+                new About(getMessageInfo),
                 new ServerInfo(getMessageInfo),
                 new WhatShard(),
 

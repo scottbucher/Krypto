@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.entities.SelfUser;
 
 import java.awt.*;
 import java.sql.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -68,6 +69,7 @@ public class XpLeaderboard extends Command {
             members = getMembers(event, size);
         }
 
+        DecimalFormat formatter = new DecimalFormat("#,###");
 
         EmbedBuilder builder = new EmbedBuilder();
         builder.setTitle("__**Leveling Leaderboard**__ (Top " + size + " Members)")
@@ -85,7 +87,7 @@ public class XpLeaderboard extends Command {
                     "\n`" + (i + 1) + ":` **%s** Player Level: %s\n   (Total XP: %s)\n",
                     member.getEffectiveName(),
                     level,
-                    xp
+                    formatter.format(xp)
             ));
         }
 

@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -27,15 +28,15 @@ public class XpMessages {
         String botIcon = bot.getAvatarUrl();
         EmbedBuilder builder = new EmbedBuilder();
 
-        int playerLevel = xpMethods.getLevelFromXp(event);
-        int playerLevelXp = xpMethods.getLevelXp(event);
-        int playerXp = xpMethods.getPlayerXp(event.getMember(), event);
-        int playerXpTowardsNextLevel = xpMethods.getRemainingXp(event);
+        double playerLevel = xpMethods.getLevelFromXp(event);
+        double playerLevelXp = xpMethods.getLevelXp(event);
+        double playerXp = xpMethods.getPlayerXp(event.getMember(), event);
+        double playerXpTowardsNextLevel = xpMethods.getRemainingXp(event);
 
         String comp = "\uD83D\uDFE9";
         String non = "\u25AB";
         int totalBars = 10;
-        double progressPercent = Math.floor(((double) playerXpTowardsNextLevel / (double) playerLevelXp) * 100);
+        double progressPercent = Math.floor((playerXpTowardsNextLevel / playerLevelXp) * 100);
         float progress = Math.round(((float) playerXpTowardsNextLevel / (float) playerLevelXp) * totalBars);
         StringBuilder progressBar = new StringBuilder();
 
@@ -47,11 +48,13 @@ public class XpMessages {
             progressBar.append(non);
         progressBar.append(" ").append((int) progressPercent).append("%");
 
+        DecimalFormat formatter = new DecimalFormat("#,###");
+
         builder.setTitle("**" + event.getMember().getEffectiveName() + "'s Leveling Progress**")
                 .setColor(Color.decode("#32CD32"))
                 .addField("Player Level", "" + playerLevel, false)
-                .addField("Player Experience", "" + playerXp, false)
-                .addField("Level Progress", playerXpTowardsNextLevel + "/" + playerLevelXp + " XP towards level: **" + (playerLevel + 1)
+                .addField("Player Experience", "" + formatter.format(playerXp), false)
+                .addField("Level Progress", formatter.format(playerXpTowardsNextLevel) + " / " + formatter.format(playerLevelXp) + " XP towards level: **" + (playerLevel + 1)
                         + "**\n" + progressBar, false)
                 .setFooter("You may only earn xp once per minute, this is to prevent abuse.", botIcon);
         channel.sendMessage(builder.build()).queue();
@@ -118,20 +121,20 @@ public class XpMessages {
         if (channelId.equals("0")) return;
         if (event.getGuild().getTextChannelById(channelId) == null) return;
 
-        String message = "**Congratulations " + member.getAsMention() + "** you've reached level __**" + level + "**__ and have unlocked the following role(s): ";
+        StringBuilder message = new StringBuilder("**Congratulations " + member.getAsMention() + "** you've reached level __**" + level + "**__ and have unlocked the following role(s): ");
 
         int size = roles.size();
 
         if (size == 1) {
-            message += roles.get(0).getName() + "!"; //Formatting: if there is only one role to add to the user then a compound input isn't required
+            message.append(roles.get(0).getName()).append("!"); //Formatting: if there is only one role to add to the user then a compound input isn't required
         } else {
             for (int i = 0; i < size-1; i++)
-                message += roles.get(i).getName() + ", "; //if there is more than one then it adds all but the last
+                message.append(roles.get(i).getName()).append(", "); //if there is more than one then it adds all but the last
 
-            message += "& " + roles.get(size-1).getName() + "!"; //adds the last and ends it with proper punctuation
+            message.append("& ").append(roles.get(size - 1).getName()).append("!"); //adds the last and ends it with proper punctuation
         }
-        event.getGuild().getTextChannelById(channelId) //send message
-                .sendMessage(message).queue();
+        Objects.requireNonNull(event.getGuild().getTextChannelById(channelId)) //send message
+                .sendMessage(message.toString()).queue();
     }
 
     public void sendLevelUpMessage(Member member, int level, Guild guild) {
@@ -139,7 +142,7 @@ public class XpMessages {
         if (channelId.equals("0")) return;
         if (guild.getTextChannelById(channelId) == null) return; //Levelup message if there is no level reward for the specified level.
 
-        guild.getTextChannelById(channelId)
+        Objects.requireNonNull(guild.getTextChannelById(channelId))
                 .sendMessage("**Congratulations " + member.getAsMention() + "** you've reached level __**" + level + "**__").queue();
     }
 
@@ -148,20 +151,20 @@ public class XpMessages {
         if (channelId.equals("0")) return;
         if (guild.getTextChannelById(channelId) == null) return;
 
-        String message = "**Congratulations " + member.getAsMention() + "** you've reached level __**" + level + "**__ and have unlocked the following role(s): ";
+        StringBuilder message = new StringBuilder("**Congratulations " + member.getAsMention() + "** you've reached level __**" + level + "**__ and have unlocked the following role(s): ");
 
         int size = roles.size();
 
         if (size == 1) {
-            message += roles.get(0).getName() + "!"; //Formatting: if there is only one role to add to the user then a compound input isn't required
+            message.append(roles.get(0).getName()).append("!"); //Formatting: if there is only one role to add to the user then a compound input isn't required
         } else {
             for (int i = 0; i < size-1; i++)
-                message += roles.get(i).getName() + ", "; //if there is more than one then it adds all but the last
+                message.append(roles.get(i).getName()).append(", "); //if there is more than one then it adds all but the last
 
-            message += "& " + roles.get(size-1).getName() + "!"; //adds the last and ends it with proper punctuation
+            message.append("& ").append(roles.get(size - 1).getName()).append("!"); //adds the last and ends it with proper punctuation
         }
-        guild.getTextChannelById(channelId) //send message
-                .sendMessage(message).queue();
+        Objects.requireNonNull(guild.getTextChannelById(channelId)) //send message
+                .sendMessage(message.toString()).queue();
     }
 
     public void setPlayerXp(TextChannel channel, Member target, int xp) {

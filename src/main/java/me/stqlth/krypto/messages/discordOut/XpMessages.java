@@ -28,7 +28,7 @@ public class XpMessages {
         String botIcon = bot.getAvatarUrl();
         EmbedBuilder builder = new EmbedBuilder();
 
-        double playerLevel = xpMethods.getLevelFromXp(event);
+        int playerLevel = xpMethods.getLevelFromXp(event);
         double playerLevelXp = xpMethods.getLevelXp(event);
         double playerXp = xpMethods.getPlayerXp(event.getMember(), event);
         double playerXpTowardsNextLevel = xpMethods.getRemainingXp(event);

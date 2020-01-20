@@ -7,8 +7,10 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class XpMessages {
@@ -27,12 +29,30 @@ public class XpMessages {
 
         int playerLevel = xpMethods.getLevelFromXp(event);
         int playerLevelXp = xpMethods.getLevelXp(event);
+        int playerXp = xpMethods.getPlayerXp(event.getMember(), event);
         int playerXpTowardsNextLevel = xpMethods.getRemainingXp(event);
+
+        String comp = "\uD83D\uDFE9";
+        String non = "\u25AB";
+        int totalBars = 10;
+        double progressPercent = Math.floor(((double) playerXpTowardsNextLevel / (double) playerLevelXp) * 100);
+        float progress = Math.round(((float) playerXpTowardsNextLevel / (float) playerLevelXp) * totalBars);
+        StringBuilder progressBar = new StringBuilder();
+
+        int left = totalBars - (int) progress;
+
+        for(int i = 0; i < progress; i++)
+            progressBar.append(comp);
+        for(int c = 0; c < left; c++)
+            progressBar.append(non);
+        progressBar.append(" ").append((int) progressPercent).append("%");
 
         builder.setTitle("**" + event.getMember().getEffectiveName() + "'s Leveling Progress**")
                 .setColor(Color.decode("#32CD32"))
                 .addField("Player Level", "" + playerLevel, false)
-                .setDescription(playerXpTowardsNextLevel + "/" + playerLevelXp + " XP towards level: **" + (playerLevel + 1) + "**")
+                .addField("Player Experience", "" + playerXp, false)
+                .addField("Level Progress", playerXpTowardsNextLevel + "/" + playerLevelXp + " XP towards level: **" + (playerLevel + 1)
+                        + "**\n" + progressBar, false)
                 .setFooter("You may only earn xp once per minute, this is to prevent abuse.", botIcon);
         channel.sendMessage(builder.build()).queue();
     }
@@ -78,7 +98,7 @@ public class XpMessages {
         builder.setTitle("Invalid Usage!")
                 .setAuthor(member.getUser().getName(), member.getUser().getAvatarUrl(), member.getUser().getAvatarUrl())
                 .setColor(Color.decode("#EA2027"))
-                .setDescription("Proper usage: " + getMessageInfo.getPrefix(g) + command + " <xp>")
+                .setDescription("Proper usage: " + getMessageInfo.getPrefix(g) + command + "<@user> <xp>")
                 .appendDescription("\n<> = Required, [] = Optional")
                 .setFooter("© 2020 Skyvade", botIcon);
         channel.sendMessage(builder.build()).complete().delete().queueAfter(15, TimeUnit.SECONDS);
@@ -89,7 +109,7 @@ public class XpMessages {
         if (channelId.equals("0")) return;
         if (event.getGuild().getTextChannelById(channelId) == null) return; //Levelup message if there is no level reward for the specified level.
 
-        event.getGuild().getTextChannelById(channelId)
+        Objects.requireNonNull(event.getGuild().getTextChannelById(channelId))
                 .sendMessage("**Congratulations " + member.getAsMention() + "** you've reached level __**" + level + "**__").queue();
     }
 

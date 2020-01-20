@@ -46,7 +46,7 @@ public class SetXp extends Command {
         int xp;
 
         if (args.length < 3) {
-            event.getMessage().delete().queue(); //Need 3 args to run this command, default command, user's @ and xp amount
+            event.getMessage().delete().queue();
             xpMessages.sendSetXpErrorMessage(event.getTextChannel(), event.getMember(), event, getName());
             return;
         }

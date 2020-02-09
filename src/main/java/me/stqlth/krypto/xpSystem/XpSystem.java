@@ -77,7 +77,7 @@ public class XpSystem extends ListenerAdapter {
         try (Connection conn = DriverManager.getConnection(kryptoConfig.getDbUrl(), kryptoConfig.getDbUser(), kryptoConfig.getDbPassword());
              Statement statement = conn.createStatement()) {
 
-            statement.execute("UPDATE xp SET XpAmount='" + xp + "' WHERE GuildId='" + getGuildId(guild) + "' AND UserId='" + getUserId(user) + "'");
+            statement.execute("CALL UpdateXp(" + xp + ", " + getGuildId(guild) + ", " + getUserId(user) + ")");
         } catch (SQLException ex) {
             debugMessages.sqlDebug(ex);
         }
@@ -89,7 +89,7 @@ public class XpSystem extends ListenerAdapter {
         try (Connection conn = DriverManager.getConnection(kryptoConfig.getDbUrl(), kryptoConfig.getDbUser(), kryptoConfig.getDbPassword());
              Statement statement = conn.createStatement()) {
 
-            ResultSet rs = statement.executeQuery("SELECT XpAmount FROM xp WHERE GuildId='" + getGuildId(guild) + "' AND UserId='" + getUserId(user) + "'");
+            ResultSet rs = statement.executeQuery("CALL GetXp(" + getGuildId(guild) + ", " + getUserId(user) + ")");
             rs.next();
             xp = rs.getInt("XpAmount");
 
@@ -110,7 +110,7 @@ public class XpSystem extends ListenerAdapter {
             randXp(event);
             Date date = new Date();
             Timestamp ts = new Timestamp(date.getTime());
-            setPlayerTime(event, ts);
+            setPlayerTime(event);
 
             int newLevel = xpMethods.getLevelFromXp(getPlayerXp(event));
             if ((currentLevel != newLevel) && (event.getMember() != null)) {
@@ -122,11 +122,10 @@ public class XpSystem extends ListenerAdapter {
         }
     }
 
-    private void setPlayerTime(GuildMessageReceivedEvent event, Timestamp time) {
+    private void setPlayerTime(GuildMessageReceivedEvent event) {
         try (Connection conn = DriverManager.getConnection(kryptoConfig.getDbUrl(), kryptoConfig.getDbUser(), kryptoConfig.getDbPassword());
              Statement statement = conn.createStatement()) {
-
-            statement.execute("UPDATE xp SET LastUpdated='" + time + "' WHERE GuildId='" + getGuildId(event) + "' AND UserId='" + getUserId(event) + "'");
+            statement.execute("CALL UpdateLastUpdated(" + getGuildId(event) + ", " + getUserId(event) + ")");
 
         } catch (SQLException ex) {
             debugMessages.sqlDebug(ex);
@@ -137,7 +136,7 @@ public class XpSystem extends ListenerAdapter {
         try (Connection conn = DriverManager.getConnection(kryptoConfig.getDbUrl(), kryptoConfig.getDbUser(), kryptoConfig.getDbPassword());
              Statement statement = conn.createStatement()) {
 
-            statement.execute("UPDATE xp SET XpAmount='" + xp + "' WHERE GuildId='" + getGuildId(event) + "' AND UserId='" + getUserId(event) + "'");
+            statement.execute("CALL UpdateXp(" + xp + ", " + getGuildId(event) + ", " + getUserId(event) + ")");
         } catch (SQLException ex) {
             debugMessages.sqlDebug(ex);
         }
@@ -169,7 +168,7 @@ public class XpSystem extends ListenerAdapter {
              Statement statement = conn.createStatement()) {
             Guild g = event.getGuild();
 
-            ResultSet rs = statement.executeQuery("SELECT GuildId FROM guild WHERE DiscordId='" + g.getId() + "'");
+            ResultSet rs = statement.executeQuery("CALL GetGuildId(" + g.getId() + ")");
             rs.next();
             guildId = rs.getInt("GuildId");
 
@@ -186,7 +185,7 @@ public class XpSystem extends ListenerAdapter {
         try (Connection conn = DriverManager.getConnection(kryptoConfig.getDbUrl(), kryptoConfig.getDbUser(), kryptoConfig.getDbPassword());
              Statement statement = conn.createStatement()) {
 
-            ResultSet rs = statement.executeQuery("SELECT UserId FROM users WHERE UserDiscordId='" + Objects.requireNonNull(event.getMember()).getUser().getId() + "'");
+            ResultSet rs = statement.executeQuery("CALL GetUserId(" + Objects.requireNonNull(event.getMember()).getUser().getId() + ")");
             rs.next();
             userId = rs.getInt("UserId");
 
@@ -205,7 +204,7 @@ public class XpSystem extends ListenerAdapter {
         try (Connection conn = DriverManager.getConnection(kryptoConfig.getDbUrl(), kryptoConfig.getDbUser(), kryptoConfig.getDbPassword());
              Statement statement = conn.createStatement()) {
 
-            ResultSet rs = statement.executeQuery("SELECT LastUpdated FROM xp WHERE GuildId='" + getGuildId(event) + "' AND UserId='" + getUserId(event) + "'");
+            ResultSet rs = statement.executeQuery("CALL GetPlayerTime(" + getGuildId(event) + ", " + getUserId(event) + ")");
             rs.next();
 
             if (rs.getTimestamp("LastUpdated") != null) {
@@ -225,7 +224,7 @@ public class XpSystem extends ListenerAdapter {
         try (Connection conn = DriverManager.getConnection(kryptoConfig.getDbUrl(), kryptoConfig.getDbUser(), kryptoConfig.getDbPassword());
              Statement statement = conn.createStatement()) {
 
-            ResultSet rs = statement.executeQuery("SELECT XpAmount FROM xp WHERE GuildId='" + getGuildId(event) + "' AND UserId='" + getUserId(event) + "'");
+            ResultSet rs = statement.executeQuery("CALL GetXp(" + getGuildId(event) + ", " + getUserId(event) + ")");
             rs.next();
             xp = rs.getInt("XpAmount");
 
@@ -245,7 +244,7 @@ public class XpSystem extends ListenerAdapter {
         try (Connection conn = DriverManager.getConnection(kryptoConfig.getDbUrl(), kryptoConfig.getDbUser(), kryptoConfig.getDbPassword());
              Statement statement = conn.createStatement()) {
 
-            ResultSet rs = statement.executeQuery("SELECT GuildId FROM guild WHERE DiscordId='" + guild.getId() + "'");
+            ResultSet rs = statement.executeQuery("CALL GetGuildId(" + guild.getId() + ")");
             rs.next();
             guildId = rs.getInt("GuildId");
 
@@ -262,7 +261,7 @@ public class XpSystem extends ListenerAdapter {
         try (Connection conn = DriverManager.getConnection(kryptoConfig.getDbUrl(), kryptoConfig.getDbUser(), kryptoConfig.getDbPassword());
              Statement statement = conn.createStatement()) {
 
-            ResultSet rs = statement.executeQuery("SELECT UserId FROM users WHERE UserDiscordId='" + user.getId() + "'");
+            ResultSet rs = statement.executeQuery("CALL GetUserId(" + user.getId() + ")");
             rs.next();
             userId = rs.getInt("UserId");
 
@@ -273,35 +272,13 @@ public class XpSystem extends ListenerAdapter {
         return userId;
     }
 
-    private Timestamp getPlayerTime(Guild guild, User user) {
-        Date date = new Date();
-        long time = date.getTime();
-        Timestamp timestamp = new Timestamp(time);
-
-        try (Connection conn = DriverManager.getConnection(kryptoConfig.getDbUrl(), kryptoConfig.getDbUser(), kryptoConfig.getDbPassword());
-             Statement statement = conn.createStatement()) {
-
-            ResultSet rs = statement.executeQuery("SELECT LastUpdated FROM xp WHERE GuildId='" + getGuildId(guild) + "' AND UserId='" + getUserId(user) + "'");
-            rs.next();
-
-            if (rs.getTimestamp("LastUpdated") != null) {
-                return rs.getTimestamp("LastUpdated");
-            }
-
-        } catch (SQLException ex) {
-            debugMessages.sqlDebug(ex);
-        }
-
-        return timestamp;
-    }
-
     private int getPlayerXp(Guild guild, User user) {
         int xp = -1;
 
         try (Connection conn = DriverManager.getConnection(kryptoConfig.getDbUrl(), kryptoConfig.getDbUser(), kryptoConfig.getDbPassword());
              Statement statement = conn.createStatement()) {
 
-            ResultSet rs = statement.executeQuery("SELECT XpAmount FROM xp WHERE GuildId='" + getGuildId(guild) + "' AND UserId='" + getUserId(user) + "'");
+            ResultSet rs = statement.executeQuery("CALL GetXp(" + getGuildId(guild) + ", " + getUserId(user) + ")");
             rs.next();
             xp = rs.getInt("XpAmount");
 

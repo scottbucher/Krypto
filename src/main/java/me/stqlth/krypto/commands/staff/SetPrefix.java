@@ -46,14 +46,19 @@ public class SetPrefix extends Command {
             return;
         }
 
+        if (args[1].length() > 100) {
+            staffMessages.prefixTooLarge(channel);
+            return;
+        }
+
         try (Connection conn = DriverManager.getConnection(kryptoConfig.getDbUrl(), kryptoConfig.getDbUser(), kryptoConfig.getDbPassword());
              Statement statement = conn.createStatement()) {
 
             int gSettingsId=0;
-            ResultSet id = statement.executeQuery("SELECT GuildSettingsId FROM guild WHERE DiscordId='" + g.getId() + "'");
+            ResultSet id = statement.executeQuery("CALL GetGuildSettingsId(" + event.getGuild().getId() + ")");
             if (id.next()) gSettingsId = id.getInt("GuildSettingsId");
 
-            statement.execute("UPDATE guildsettings SET Prefix='" + args[1] + "' WHERE GuildSettingsId='" + gSettingsId + "'");
+            statement.execute("CALL UpdatePrefix('" + args[1] + "', " + gSettingsId + ")");
             staffMessages.setPrefix(channel, args[1]);
         } catch (SQLException ex) {
             debugMessages.sqlDebug(ex);

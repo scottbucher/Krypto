@@ -7,7 +7,10 @@ import java.sql.SQLException;
 public class DebugMessages {
 
     public void sqlDebug(SQLException ex) {
-        Logger.Error("A SQL error was encountered.", ex);
+        System.out.println("SQLExpection: " + ex.getMessage());
+        System.out.println("SQLState: " + ex.getSQLState());
+        System.out.println("VendorError: " + ex.getErrorCode());
+//        Logger.Error("A SQL error was encountered.", ex);
     }
 
 }

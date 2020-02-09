@@ -46,10 +46,10 @@ public class DisabledLevelingMessages extends Command {
              Statement statement = conn.createStatement()) {
 
             int gSettingsId = 0;
-            ResultSet id = statement.executeQuery("SELECT GuildSettingsId FROM guild WHERE DiscordId='" + g.getId() + "'");
+            ResultSet id = statement.executeQuery("CALL GetGuildSettingsId(" + event.getGuild().getId() + ")");
             if (id.next()) gSettingsId = id.getInt("GuildSettingsId");
 
-            statement.execute("UPDATE guildsettings SET LevelingChannel='" + 0 + "' WHERE GuildSettingsId='" + gSettingsId + "'");
+            statement.execute("CALL UpdateLevelingChannel(" + 0 + ", " + gSettingsId + ")");
             staffMessages.disableLevelingChannel(channel);
         } catch (SQLException ex) {
             debugMessages.sqlDebug(ex);

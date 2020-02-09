@@ -86,7 +86,13 @@ public class StaffMessages {
                 .setDescription("Only Staff may use this command!");
         channel.sendMessage(builder.build()).complete().delete().queueAfter(15, TimeUnit.SECONDS);
     }
+    public void prefixTooLarge(TextChannel channel) {
+        EmbedBuilder builder = new EmbedBuilder();
 
+        builder.setColor(Color.decode("#EA2027"))
+                .setDescription("Your prefix can only be 100 characters long.");
+        channel.sendMessage(builder.build()).complete().delete().queueAfter(15, TimeUnit.SECONDS);
+    }
     public void onlyAdmins(TextChannel channel) {
         EmbedBuilder builder = new EmbedBuilder();
 

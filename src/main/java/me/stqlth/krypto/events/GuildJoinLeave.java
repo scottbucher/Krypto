@@ -28,18 +28,18 @@ public class GuildJoinLeave extends ListenerAdapter {
         try (Connection conn = DriverManager.getConnection(kryptoConfig.getDbUrl(), kryptoConfig.getDbUser(), kryptoConfig.getDbPassword());
              Statement statement = conn.createStatement()) {
 
-            ResultSet check = statement.executeQuery("SELECT COUNT(*) > 0 AS AlreadyExists FROM guild WHERE DiscordId='" + guild.getId() + "'");
+            ResultSet check = statement.executeQuery("CALL DoesGuildAlreadyExist(" + guild.getId() + ")");
             check.next();
             boolean alreadyExists = check.getBoolean("AlreadyExists");
 
             if (!alreadyExists) {
-                statement.execute("INSERT INTO guildsettings (Prefix) VALUES('!')");
-                ResultSet rs = statement.executeQuery("SELECT LAST_INSERT_ID()");
+                statement.execute("CALL InsertGuildSettings('!')");
+                ResultSet rs = statement.executeQuery("CALL SelectLastInsertID()");
                 rs.next();
                 int lastId = rs.getInt("LAST_INSERT_ID()");
-                statement.execute("INSERT INTO guild (DiscordId, GuildSettingsId, Active) " + "VALUES('" + guild.getId() + "', '" + lastId + "', '1')");
+                statement.execute("CALL InsertGuild(" + guild.getId() + ", " + lastId + ", 1)");
             } else {
-                statement.execute("UPDATE guild SET Active=true WHERE DiscordId='" + guild.getId() + "'");
+                statement.execute("CALL UpdateGuildActive(" + guild.getId() + ", 1)");
             }
 
         } catch (SQLException ex) {
@@ -70,31 +70,29 @@ public class GuildJoinLeave extends ListenerAdapter {
              Statement statement = conn.createStatement()) {
             Guild g = event.getGuild();
 
-            ResultSet guildId = statement.executeQuery("SELECT GuildId FROM guild WHERE DiscordId='" + g.getId() + "'");
+            ResultSet guildId = statement.executeQuery("CALL GetGuildId(" + g.getId() + ")");
             guildId.next();
             int discordId = guildId.getInt("GuildId");
 
-            ResultSet check = statement.executeQuery("SELECT COUNT(*) > 0 AS UserAlreadyExists FROM users WHERE UserDiscordId='" + member.getId() + "'");
+            ResultSet check = statement.executeQuery("CALL DoesUserAlreadyExist(" + member.getId() + ")");
             check.next();
-            boolean UserAlreadyExists = check.getBoolean("UserAlreadyExists");
-
+            boolean UserAlreadyExists = check.getBoolean("AlreadyExists");
 
             if (!UserAlreadyExists) {
-                statement.execute("INSERT INTO users (UserDiscordId) VALUES('" + member.getId() + "')");
+                statement.execute("CALL InsertUser(" + member.getId() + ")");
             }
 
-
-            ResultSet UserId = statement.executeQuery("SELECT UserId FROM users WHERE UserDiscordId='" + member.getId() + "'");
+            ResultSet UserId = statement.executeQuery("CALL GetUserId(" + member.getId() + ")");
             UserId.next();
             int userId = UserId.getInt("UserId");
 
-            ResultSet check2 = statement.executeQuery("SELECT COUNT(*) > 0 AS DiscordAndUserExistsInXp FROM xp WHERE GuildId='" + discordId + "' AND UserId='" + userId + "'");
+            ResultSet check2 = statement.executeQuery("CALL DoesDiscordAndUserExistInXp(" + discordId + ", " + userId + ")");
             check2.next();
-            boolean DiscordAndUserExistsInXp = check2.getBoolean("DiscordAndUserExistsInXp");
+            boolean DiscordAndUserExistsInXp = check2.getBoolean("AlreadyExists");
 
 
             if (!DiscordAndUserExistsInXp) {
-                statement.execute("INSERT INTO xp (GuildId, UserId) " + "VALUES('" + discordId + "', '" + userId + "')");
+                statement.execute("CALL InsertXp(" + discordId + ", " + userId + ")");
             }
 
         } catch (SQLException ex) {

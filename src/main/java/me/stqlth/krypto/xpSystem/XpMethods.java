@@ -24,7 +24,7 @@ public class XpMethods {
              Statement statement = conn.createStatement()) {
             Guild g = event.getGuild();
 
-            ResultSet rs = statement.executeQuery("SELECT GuildId FROM guild WHERE DiscordId='" + g.getId() + "'");
+            ResultSet rs = statement.executeQuery("CALL GetGuildId(" + g.getId() + ")");
             rs.next();
             guildId = rs.getInt("GuildId");
 
@@ -41,7 +41,7 @@ public class XpMethods {
         try (Connection conn = DriverManager.getConnection(kryptoConfig.getDbUrl(), kryptoConfig.getDbUser(), kryptoConfig.getDbPassword());
              Statement statement = conn.createStatement()) {
 
-            ResultSet rs = statement.executeQuery("SELECT UserId FROM users WHERE UserDiscordId='" + event.getMember().getUser().getId() + "'");
+            ResultSet rs = statement.executeQuery("CALL GetUserId(" + event.getMember().getUser().getId() + ")");
             rs.next();
             userId = rs.getInt("UserId");
 
@@ -58,7 +58,7 @@ public class XpMethods {
         try (Connection conn = DriverManager.getConnection(kryptoConfig.getDbUrl(), kryptoConfig.getDbUser(), kryptoConfig.getDbPassword());
              Statement statement = conn.createStatement()) {
 
-            ResultSet rs = statement.executeQuery("SELECT XpAmount FROM xp WHERE GuildId='" + getGuildId(event) + "' AND UserId='" + getUserId(event) + "'");
+            ResultSet rs = statement.executeQuery("CALL GetXp(" + getGuildId(event) + ", " + getUserId(event) + ")");
             rs.next();
             xp = rs.getInt("XpAmount");
 
@@ -138,7 +138,7 @@ public class XpMethods {
         try (Connection conn = DriverManager.getConnection(kryptoConfig.getDbUrl(), kryptoConfig.getDbUser(), kryptoConfig.getDbPassword());
              Statement statement = conn.createStatement()) {
 
-            ResultSet rs = statement.executeQuery("SELECT UserId FROM users WHERE UserDiscordId='" + member.getUser().getId() + "'");
+            ResultSet rs = statement.executeQuery("CALL GetUserId(" + member.getUser().getId() + ")");
             rs.next();
             userId = rs.getInt("UserId");
 
@@ -155,7 +155,7 @@ public class XpMethods {
         try (Connection conn = DriverManager.getConnection(kryptoConfig.getDbUrl(), kryptoConfig.getDbUser(), kryptoConfig.getDbPassword());
              Statement statement = conn.createStatement()) {
 
-            ResultSet rs = statement.executeQuery("SELECT XpAmount FROM xp WHERE GuildId='" + getGuildId(event) + "' AND UserId='" + getUserId(member) + "'");
+            ResultSet rs = statement.executeQuery("CALL GetXp(" + getGuildId(event) + ", " + getUserId(member) + ")");
             rs.next();
             xp = rs.getInt("XpAmount");
 

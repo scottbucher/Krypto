@@ -77,8 +77,7 @@ public class AddLevelingReward extends Command {
             Statement statement = conn.createStatement()) {
 
             int guildId = xpMethods.getGuildId(event);
-
-            statement.execute("INSERT INTO rewards (GuildId, Level, Role) VALUES('" + guildId + "', '" + level + "', '" + reward.getName() + "')");
+            statement.execute("CALL InsertReward(" + guildId + ", " + level + ", '" + reward.getName() + "')");
             xpMessages.setLevelingReward(channel, reward, level);
         } catch (SQLException ex) {
             debugMessages.sqlDebug(ex);

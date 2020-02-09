@@ -69,10 +69,7 @@ public class RemoveLevelingReward extends Command {
 
             int guildId = xpMethods.getGuildId(event);
 
-            ResultSet check = statement.executeQuery("SELECT COUNT(*) > 0 AS AlreadyExists FROM guild WHERE DiscordId='" + g.getId() + "'");
-            check.next();
-
-            statement.execute("DELETE FROM rewards WHERE GuildId='" + guildId + "' AND Level='" + level + "'");
+            statement.execute("CALL RemoveReward(" + guildId + ", " + level + ")");
             xpMessages.removeLevelingReward(channel, level);
 
         } catch (SQLException ex) {

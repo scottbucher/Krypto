@@ -16,6 +16,7 @@ import net.dv8tion.jda.api.managers.AudioManager;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerManager {
@@ -52,6 +53,7 @@ public class PlayerManager {
     public void loadAndPlay(TextChannel channel, String trackUrl, CommandEvent event) {
         GuildVoiceState memberVoiceState = event.getMember().getVoiceState();
         AudioManager audioManager = event.getGuild().getAudioManager();
+        assert memberVoiceState != null;
         if (!memberVoiceState.inVoiceChannel()) {
             String field = "You are not in a channel";
             String footer = "Please join a channel and then use this command.";
@@ -62,7 +64,7 @@ public class PlayerManager {
         if (!audioManager.isConnected()) {
             VoiceChannel voiceChannel = memberVoiceState.getChannel();
             audioManager.openAudioConnection(voiceChannel);
-        } else if(!memberVoiceState.getChannel().equals(audioManager.getConnectedChannel())) {
+        } else if(!Objects.equals(memberVoiceState.getChannel(), audioManager.getConnectedChannel())) {
             String field = "You are not in the same channel as the bot";
             String footer = "Please join a channel and then use this command.";
             sendErrorMessage(event.getTextChannel(), event.getMember(), footer, field, event);

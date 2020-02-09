@@ -107,8 +107,7 @@ public class XpLeaderboard extends Command {
             Guild g = event.getGuild();
             int guildId = xpMethods.getGuildId(event);
 
-            ResultSet rs = statement.executeQuery("SELECT UserDiscordId FROM users JOIN xp ON users.UserId=xp.UserId WHERE " +
-                    "(GuildId="+ guildId+ ") ORDER BY XpAmount DESC LIMIT " + size);
+            ResultSet rs = statement.executeQuery("CALL GetUsersForLeaderBoard(" + guildId + ", " + size + ")");
 
             for (int i = 0; i < size; i++) {
                 rs.next();

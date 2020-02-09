@@ -49,31 +49,31 @@ public class GuildMemberJoinLeave extends ListenerAdapter {
              Statement statement = conn.createStatement()) {
             Guild g = event.getGuild();
 
-            ResultSet guildId = statement.executeQuery("SELECT GuildId FROM guild WHERE DiscordId='" + g.getId() + "'");
+            ResultSet guildId = statement.executeQuery("CALL GetGuildId(" + g.getId() + ")");
             guildId.next();
             int discordId = guildId.getInt("GuildId");
 
-            ResultSet check = statement.executeQuery("SELECT COUNT(*) > 0 AS UserAlreadyExists FROM users WHERE UserDiscordId='" + event.getMember().getId() + "'");
+            ResultSet check = statement.executeQuery("CALL DoesUserAlreadyExist(" + event.getMember().getId() + ")");
             check.next();
             boolean UserAlreadyExists = check.getBoolean("UserAlreadyExists");
 
 
             if (!UserAlreadyExists) {
-                statement.execute("INSERT INTO users (UserDiscordId) VALUES('" + event.getMember().getId() + "')");
+                statement.execute("CALL InsertUser(" + event.getMember().getId() + ")");
             }
 
 
-            ResultSet UserId = statement.executeQuery("SELECT UserId FROM users WHERE UserDiscordId='" + event.getMember().getId() + "'");
+            ResultSet UserId = statement.executeQuery("CALL GetUserId(" + event.getMember().getId() + ")");
             UserId.next();
             int userId = UserId.getInt("UserId");
 
-            ResultSet check2 = statement.executeQuery("SELECT COUNT(*) > 0 AS DiscordAndUserExistsInXp FROM xp WHERE GuildId='" + discordId + "' AND UserId='" + userId + "'");
+            ResultSet check2 = statement.executeQuery("CALL DoesDiscordAndUserExistInXp(" + discordId + ", " + userId + ")");
             check2.next();
             boolean DiscordAndUserExistsInXp = check2.getBoolean("DiscordAndUserExistsInXp");
 
 
             if (!DiscordAndUserExistsInXp) {
-                statement.execute("INSERT INTO xp (GuildId, UserId) " + "VALUES('" + discordId + "', '" + userId + "')");
+                statement.execute("CALL InsertXp(" + discordId + ", " + userId + ")");
             }
 
         } catch (SQLException ex) {

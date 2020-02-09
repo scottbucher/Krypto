@@ -38,7 +38,7 @@ public class SetXp extends Command {
     protected void execute(CommandEvent event) {
         if (!event.getMember().getId().equals(kryptoConfig.getOwnerId())) {
             event.getMessage().delete().queue();
-            xpMessages.onlyOwner(event.getTextChannel()); //Only Stqlth can use this command, souly for testing, no server owner should avoid the xp system
+            xpMessages.onlyOwner(event.getTextChannel()); //Only Stqlth can use this command for testing, no server owner should avoid the xp system
             return;
         } //Makes sure no owner can use this
 
@@ -70,7 +70,7 @@ public class SetXp extends Command {
         try (Connection conn = DriverManager.getConnection(kryptoConfig.getDbUrl(), kryptoConfig.getDbUser(), kryptoConfig.getDbPassword());
              Statement statement = conn.createStatement()) {
 
-            statement.execute("UPDATE xp SET XpAmount='" + xp + "' WHERE GuildId='" + xpMethods.getGuildId(event) + "' AND UserId='" + userId + "'");
+            statement.execute("CALL UpdateXp(" + xp + ", " + xpMethods.getGuildId(event) + ", " + userId + ")");
             xpMessages.setPlayerXp(event.getTextChannel(), target, xp);
         } catch (SQLException ex) {
             debugMessages.sqlDebug(ex);

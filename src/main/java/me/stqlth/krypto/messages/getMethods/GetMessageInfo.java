@@ -25,10 +25,10 @@ public class GetMessageInfo {
              Statement statement = conn.createStatement()) {
             int gSettingsId=0;
 
-            ResultSet id = statement.executeQuery("SELECT GuildSettingsId FROM guild WHERE DiscordId='" + guild.getId() + "'");
+            ResultSet id = statement.executeQuery("CALL GetGuildSettingsId(" + guild.getId() + ")");
             if (id.next()) gSettingsId = id.getInt("GuildSettingsId");
 
-            ResultSet rs = statement.executeQuery("SELECT Prefix FROM guildsettings WHERE GuildSettingsId='" + gSettingsId + "'");
+            ResultSet rs = statement.executeQuery("CALL GetPrefix(" + gSettingsId + ")");
 
             if (rs.next()) {
                 prefixes.add(rs.getString("Prefix"));
@@ -49,10 +49,10 @@ public class GetMessageInfo {
              Statement statement = conn.createStatement()) {
             int gSettingsId=0;
 
-            ResultSet id = statement.executeQuery("SELECT GuildSettingsId FROM guild WHERE DiscordId='" + event.getGuild().getId() + "'");
+            ResultSet id = statement.executeQuery("CALL GetGuildSettingsId(" + event.getGuild().getId() + ")");
             if (id.next()) gSettingsId = id.getInt("GuildSettingsId");
 
-            ResultSet rs = statement.executeQuery("SELECT LevelingChannel FROM guildsettings WHERE GuildSettingsId='" + gSettingsId + "'");
+            ResultSet rs = statement.executeQuery("CALL GetLevelingChannel(" + gSettingsId + ")");
 
             if (rs.next()) {
                 channels.add(rs.getString("LevelingChannel"));
@@ -73,10 +73,10 @@ public class GetMessageInfo {
              Statement statement = conn.createStatement()) {
             int gSettingsId=0;
 
-            ResultSet id = statement.executeQuery("SELECT GuildSettingsId FROM guild WHERE DiscordId='" + guild.getId() + "'");
+            ResultSet id = statement.executeQuery("CALL GetGuildSettingsId(" + guild.getId() + ")");
             if (id.next()) gSettingsId = id.getInt("GuildSettingsId");
 
-            ResultSet rs = statement.executeQuery("SELECT LevelingChannel FROM guildsettings WHERE GuildSettingsId='" + gSettingsId + "'");
+            ResultSet rs = statement.executeQuery("CALL GetLevelingChannel(" + gSettingsId + ")");
 
             if (rs.next()) {
                 channels.add(rs.getString("LevelingChannel"));
@@ -89,21 +89,4 @@ public class GetMessageInfo {
         return channels.getFirst().toString();
     }
 
-    public int getGuildId(CommandEvent event) {
-        int guildId = -1;
-
-        try (Connection conn = DriverManager.getConnection(kryptoConfig.getDbUrl(), kryptoConfig.getDbUser(), kryptoConfig.getDbPassword());
-             Statement statement = conn.createStatement()) {
-            Guild g = event.getGuild();
-
-            ResultSet rs = statement.executeQuery("SELECT GuildId FROM guild WHERE DiscordId='" + g.getId() + "'");
-            rs.next();
-            guildId = rs.getInt("GuildId");
-
-        } catch (SQLException ex) {
-            debugMessages.sqlDebug(ex);
-        }
-
-        return guildId;
-    }
 }

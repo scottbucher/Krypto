@@ -33,6 +33,9 @@ public class XpMessages {
         double playerXp = xpMethods.getPlayerXp(event.getMember(), event);
         double playerXpTowardsNextLevel = xpMethods.getRemainingXp(event);
 
+        Member sender = event.getMember();
+        String senderIcon = sender.getUser().getAvatarUrl();
+
         String comp = "\uD83D\uDFE9";
         String non = "\u25AB";
         int totalBars = 10;
@@ -56,7 +59,8 @@ public class XpMessages {
                 .addField("Player Experience", "" + formatter.format(playerXp), false)
                 .addField("Level Progress", formatter.format(playerXpTowardsNextLevel) + " / " + formatter.format(playerLevelXp) + " XP towards level: **" + (playerLevel + 1)
                         + "**\n" + progressBar, false)
-                .setFooter("You may only earn xp once per minute, this is to prevent abuse.", botIcon);
+                .setFooter("You may only earn xp once per minute, this is to prevent abuse.", botIcon)
+				.setThumbnail(senderIcon);
         channel.sendMessage(builder.build()).queue();
     }
 
@@ -66,8 +70,8 @@ public class XpMessages {
         EmbedBuilder builder = new EmbedBuilder();
 
         int playerLevel = xpMethods.getLevelFromXp(event, target);
-        int playerLevelXp = xpMethods.getLevelXp(event, target);
-        int playerXpTowardsNextLevel = xpMethods.getRemainingXp(event, target);
+        double playerLevelXp = xpMethods.getLevelXp(event, target);
+        double playerXpTowardsNextLevel = xpMethods.getRemainingXp(event, target);
 
         builder.setTitle("**" + target.getEffectiveName() + "'s Leveling Progress**")
                 .setColor(Color.decode("#32CD32"))

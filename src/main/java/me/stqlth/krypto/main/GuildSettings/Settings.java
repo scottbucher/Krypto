@@ -31,10 +31,10 @@ public class Settings implements GuildSettingsProvider {
              Statement statement = conn.createStatement()) {
             int gSettingsId=0;
 
-            ResultSet id = statement.executeQuery("SELECT GuildSettingsId FROM guild WHERE DiscordId='" + this.guild.getId() + "'");
+            ResultSet id = statement.executeQuery("CALL GetGuildSettingsId(" + guild.getId() + ")");
             if (id.next()) gSettingsId = id.getInt("GuildSettingsId");
 
-            ResultSet rs = statement.executeQuery("SELECT Prefix FROM guildsettings WHERE GuildSettingsId='" + gSettingsId + "'");
+            ResultSet rs = statement.executeQuery("CALL GetPrefix(" + gSettingsId + ")");
 
             if (rs.next()) {
                 prefixes.add(rs.getString("Prefix"));

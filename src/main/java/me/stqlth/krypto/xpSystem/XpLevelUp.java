@@ -34,11 +34,11 @@ public class XpLevelUp {
 
             int guildId = getGuildId(event);
 
-            ResultSet number = statement.executeQuery("SELECT COUNT(Level) as Amount FROM rewards WHERE GuildId='" + guildId + "'");
+            ResultSet number = statement.executeQuery("CALL GetLevelCount(" + guildId + ")");
             number.next();
             int numberOfLevels = number.getInt("Amount");
 
-            ResultSet rs = statement.executeQuery("SELECT Level FROM rewards WHERE GuildId='" + guildId + "'");
+            ResultSet rs = statement.executeQuery("CALL GetLevel(" + guildId + ")");
 
             for (int i = 0; i < numberOfLevels; i++) {
                 rs.next();
@@ -53,10 +53,10 @@ public class XpLevelUp {
                 if (newLevel == rewardLevels.get(c)) {
 
                     isLevelUpLevel = true;
-                    ResultSet levelNum = statement.executeQuery("SELECT COUNT(Level) as Amount FROM rewards WHERE GuildId='" + guildId + "' AND Level='" + rewardLevels.get(c) + "'");
+                    ResultSet levelNum = statement.executeQuery("CALL GetSpecificLevelCount(" + guildId + ", " + rewardLevels.get(c) + ")");
                     levelNum.next();
                     levelRoleAmount = levelNum.getInt("Amount");
-                    roles = statement.executeQuery("SELECT Role FROM rewards WHERE GuildId='" + guildId + "' AND Level='" + rewardLevels.get(c) + "'");
+                    roles = statement.executeQuery("CALL GetRoles(" + guildId + ", " + rewardLevels.get(c) + ")");
 
                     for (int i  = 0; i < levelRoleAmount; i++) {
                         roles.next();
@@ -109,11 +109,11 @@ public class XpLevelUp {
 
             int guildId = getGuildId(guild);
 
-            ResultSet number = statement.executeQuery("SELECT COUNT(Level) as Amount FROM rewards WHERE GuildId='" + guildId + "'");
+            ResultSet number = statement.executeQuery("CALL GetLevelCount(" + guildId + ")");
             number.next();
             int numberOfLevels = number.getInt("Amount");
 
-            ResultSet rs = statement.executeQuery("SELECT Level FROM rewards WHERE GuildId='" + guildId + "'");
+            ResultSet rs = statement.executeQuery("CALL Get(" + guildId + ")");
 
             for (int i = 0; i < numberOfLevels; i++) {
                 rs.next();
@@ -128,10 +128,10 @@ public class XpLevelUp {
                 if (newLevel == rewardLevels.get(c)) {
 
                     isLevelUpLevel = true;
-                    ResultSet levelNum = statement.executeQuery("SELECT COUNT(Level) as Amount FROM rewards WHERE GuildId='" + guildId + "' AND Level='" + rewardLevels.get(c) + "'");
+                    ResultSet levelNum = statement.executeQuery("CALL GetSpecificLevelCount(" + guildId + ", " + rewardLevels.get(c) + ")");
                     levelNum.next();
                     levelRoleAmount = levelNum.getInt("Amount");
-                    roles = statement.executeQuery("SELECT Role FROM rewards WHERE GuildId='" + guildId + "' AND Level='" + rewardLevels.get(c) + "'");
+                    roles = statement.executeQuery("CALL GetRoles(" + guildId + ", " + rewardLevels.get(c) + ")");
 
                     for (int i  = 0; i < levelRoleAmount; i++) {
                         roles.next();
@@ -179,7 +179,7 @@ public class XpLevelUp {
              Statement statement = conn.createStatement()) {
             Guild g = event.getGuild();
 
-            ResultSet rs = statement.executeQuery("SELECT GuildId FROM guild WHERE DiscordId='" + g.getId() + "'");
+            ResultSet rs = statement.executeQuery("CALL GetGuildId(" + g.getId() + ")");
             rs.next();
             guildId = rs.getInt("GuildId");
 
@@ -196,7 +196,7 @@ public class XpLevelUp {
         try (Connection conn = DriverManager.getConnection(kryptoConfig.getDbUrl(), kryptoConfig.getDbUser(), kryptoConfig.getDbPassword());
              Statement statement = conn.createStatement()) {
 
-            ResultSet rs = statement.executeQuery("SELECT GuildId FROM guild WHERE DiscordId='" + guild.getId() + "'");
+            ResultSet rs = statement.executeQuery("CALL GetGuildId(" + guild.getId() + ")");
             rs.next();
             guildId = rs.getInt("GuildId");
 

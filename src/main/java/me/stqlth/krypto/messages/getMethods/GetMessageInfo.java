@@ -1,6 +1,5 @@
 package me.stqlth.krypto.messages.getMethods;
 
-import com.jagrosh.jdautilities.command.CommandEvent;
 import me.stqlth.krypto.config.KryptoConfig;
 import me.stqlth.krypto.messages.debug.DebugMessages;
 import net.dv8tion.jda.api.entities.Guild;

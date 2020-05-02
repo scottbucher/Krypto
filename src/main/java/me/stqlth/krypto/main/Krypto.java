@@ -164,7 +164,7 @@ public class Krypto {
                 e.printStackTrace();
             }
             SetupGuilds(kryptoConfig, instance.getGuilds(), debugMessages);
-            xpSystem.StartVoiceXP(instance); //begins endless loop, do not do anything after this
+            xpSystem.startTracker(instance);
         } catch (LoginException ex) {
             Logger.Error("Error encountered while logging in. The bot token may be incorrect.", ex);
         }
@@ -197,7 +197,7 @@ public class Krypto {
                 .build();
     }
 
-    private static void SetupGuilds(KryptoConfig kryptoConfig,  List<Guild> guildList, DebugMessages debugMessages) {
+    private static void SetupGuilds(KryptoConfig kryptoConfig, List<Guild> guildList, DebugMessages debugMessages) {
         for (Guild check : guildList) {
             if (!guildExists(kryptoConfig, debugMessages, check))
                 AddGuildToDatabase(kryptoConfig, check, debugMessages);

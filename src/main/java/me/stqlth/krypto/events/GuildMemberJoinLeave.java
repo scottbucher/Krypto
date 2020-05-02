@@ -24,20 +24,18 @@ public class GuildMemberJoinLeave extends ListenerAdapter {
 
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         if (!event.getMember().getUser().isBot()) {
-            joinLeaveMessages.welcomeMessage(event);
+//            joinLeaveMessages.welcomeMessage(event);
         }
         addUser(event);
 
-        Role guest = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("guest")).findFirst().orElse(null);
-
-        if (guest != null)
-            event.getGuild().addRoleToMember(event.getMember(), guest).queue();
+        event.getGuild().getRoles().stream().filter(role ->
+                role.getName().toLowerCase().contains("new members")).findFirst().ifPresent(guest -> event.getGuild().addRoleToMember(event.getMember(), guest).queue());
 
     }
 
     public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
         if (!event.getMember().getUser().isBot()) {
-            joinLeaveMessages.leaveMessage(event);
+//            joinLeaveMessages.leaveMessage(event);
         }
 
     }

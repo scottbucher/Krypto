@@ -11,7 +11,6 @@ import java.util.Objects;
 public class GuildMessageReceived extends ListenerAdapter {
 
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
-
         if (event.getAuthor().isBot()) return;
 
         String message = event.getMessage().getContentRaw().toLowerCase();

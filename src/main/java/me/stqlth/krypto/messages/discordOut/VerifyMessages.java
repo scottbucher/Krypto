@@ -23,7 +23,6 @@ public class VerifyMessages {
                             "\uD83C\uDF7F\nStream \uD83D\uDCFA\nNSFW \u26A0\nMusic \uD83C\uDFB5", "", false)
                     .addField("Role Selection", "If there is not a role category that you enjoy contact Stqlth#0001 to request it.", false);
 
-            rolecall.sendMessage("@everyone").queue();
             rolecall.sendMessage(builder.build()).queue(result -> {
                 result.addReaction("\uD83C\uDFAE").queue();//Games
                 result.addReaction("\uD83E\uDD5A").queue();//Pokémon

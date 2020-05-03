@@ -76,6 +76,14 @@ public class VerifyRolesEvents extends ListenerAdapter {
                 Role runescapeRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("runescape")).findFirst().orElse(null);
                 if (runescapeRole != null) event.getGuild().addRoleToMember(target, runescapeRole).queue();
                 break;
+            case "🍿":
+                Role movieStreamsRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("movie streams")).findFirst().orElse(null);
+                if (movieStreamsRole != null) event.getGuild().addRoleToMember(target, movieStreamsRole).queue();
+                break;
+            case "👾":
+                Role gameStreamsRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("game streams")).findFirst().orElse(null);
+                if (gameStreamsRole != null) event.getGuild().addRoleToMember(target, gameStreamsRole).queue();
+                break;
             default:
                 event.getReaction().removeReaction().queue();
                 break;
@@ -130,6 +138,14 @@ public class VerifyRolesEvents extends ListenerAdapter {
             case "⚔":
                 Role runescapeRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("runescape")).findFirst().orElse(null);
                 if (runescapeRole != null) event.getGuild().removeRoleFromMember(target, runescapeRole).queue();
+                break;
+            case "🍿":
+                Role movieStreamsRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("movie streams")).findFirst().orElse(null);
+                if (movieStreamsRole != null) event.getGuild().removeRoleFromMember(target, movieStreamsRole).queue();
+                break;
+            case "👾":
+                Role gameStreamsRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("game streams")).findFirst().orElse(null);
+                if (gameStreamsRole != null) event.getGuild().removeRoleFromMember(target, gameStreamsRole).queue();
                 break;
             default:
                 event.getReaction().removeReaction().queue();

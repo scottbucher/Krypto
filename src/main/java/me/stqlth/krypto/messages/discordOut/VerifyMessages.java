@@ -20,6 +20,7 @@ public class VerifyMessages {
                     .setFooter("To leave a role, simply remove your reaction of the corresponding role.", botIcon)
                     .addField("Topics", "😂 Memes\n🎮 Games\n🎵 Music\n💢 Anime\n🐱 Animals\n🛑 NNSFW\n🎭 Roleplay", false)
                     .addField("Games", "⛏ Minecraft\n🍂 Animal Crossing\n🥚 Pokemon\n⚔ Runescape", false)
+                    .addField("Events", "🍿 Movie Streams\n👾 Game Streams", false)
                     .addField("Role Selection", "If there is not a role category that you enjoy contact Stqlth#0001 to request it.", false);
 
             roleCall.sendMessage(builder.build()).queue(result -> {
@@ -34,6 +35,8 @@ public class VerifyMessages {
                 result.addReaction("🍂").queue(); // Animal Crossing
                 result.addReaction("🥚").queue(); // Pokemon
                 result.addReaction("⚔").queue(); // Runescape
+                result.addReaction("🍿").queue(); // Movie Streams
+                result.addReaction("👾").queue(); // Game Streams
             });
         }
 }

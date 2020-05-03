@@ -2,6 +2,7 @@ package me.stqlth.krypto.messages.discordOut;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -22,20 +23,16 @@ public class VerifyMessages {
             .addField("Events", "🍿 Movie Streams\n👾 Game Streams", false)
             .addField("Role Selection", "If there is not a role category that you enjoy contact Stqlth#0001 to request it.", false);
 
-        roleCall.sendMessage(builder.build()).queue(result -> {
-            result.addReaction("😂").queue(); // Memes
-            result.addReaction("🎮").queue(); // Games
-            result.addReaction("🎵").queue(); // Music
-            result.addReaction("💢").queue(); // Anime
-            result.addReaction("🐱").queue(); // Animals
-            result.addReaction("🛑").queue(); // NNSFW
-            result.addReaction("🎭").queue(); // Roleplay
-            result.addReaction("⛏").queue(); // Minecraft
-            result.addReaction("🍂").queue(); // Animal Crossing
-            result.addReaction("🥚").queue(); // Pokemon
-            result.addReaction("⚔").queue(); // Runescape
-            result.addReaction("🍿").queue(); // Movie Streams
-            result.addReaction("👾").queue(); // Game Streams
+        roleCall.sendMessage(builder.build()).queue(message -> {
+            String[] reactions = new String[] {"😂", "🎮", "🎵", "💢", "🐱", "🛑", "🎭", "⛏", "🍂", "🥚", "⚔", "🍿", "👾"};
+            for (String reaction : reactions) 
+            { 
+                this.addReaction(message, reaction);
+            }
         });
+    }
+
+    private void addReaction(Message message, String reaction) {
+        message.addReaction(reaction).queue();
     }
 }

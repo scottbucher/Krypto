@@ -39,7 +39,7 @@ public class PollMessages {
         EmbedBuilder builder = new EmbedBuilder();
 
         builder.setColor(Color.decode("#EA2027"))
-                .setDescription("Please use the correct usage:\npoll create <question> <option> <option>... (max 11)");
+                .setDescription("Please use the correct usage:\npoll create <question>;<option>;<option>... (max 11)");
         channel.sendMessage(builder.build()).queue();
     }
 

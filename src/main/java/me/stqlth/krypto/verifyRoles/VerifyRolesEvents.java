@@ -1,5 +1,7 @@
 package me.stqlth.krypto.verifyRoles;
 
+import java.util.List;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -28,61 +30,64 @@ public class VerifyRolesEvents extends ListenerAdapter {
     ///////////////////////////////////////////////////////////////////////////////////
 
     private static void addCategoryRoles (MessageReactionAddEvent event) {
-        Member target = event.getMember();
-        if (target == null) return;
+        Member member = event.getMember();
+        if (member == null) return;
+
+        Guild guild = event.getGuild();
+        List<Role> roles = guild.getRoles();
 
         switch (event.getReactionEmote().getName()) {
             case "😂":
-                Role memesRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("memes")).findFirst().orElse(null);
-                if (memesRole != null) event.getGuild().addRoleToMember(target, memesRole).queue();
+                Role memesRole = findRole(roles, "memes");
+                if (memesRole != null) addRoleToMember(guild, member, memesRole);
                 break;
             case "🎮":
-                Role gamesRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("games")).findFirst().orElse(null);
-                if (gamesRole != null) event.getGuild().addRoleToMember(target, gamesRole).queue();
+                Role gamesRole = findRole(roles, "games");
+                if (gamesRole != null) addRoleToMember(guild, member, gamesRole);
                 break;
             case "🎵":
-                Role musicRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("music")).findFirst().orElse(null);
-                if (musicRole != null) event.getGuild().addRoleToMember(target, musicRole).queue();
+                Role musicRole = findRole(roles, "music");
+                if (musicRole != null) addRoleToMember(guild, member, musicRole);
                 break;
             case "💢":
-                Role animeRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("anime")).findFirst().orElse(null);
-                if (animeRole != null) event.getGuild().addRoleToMember(target, animeRole).queue();
+                Role animeRole = findRole(roles, "anime");
+                if (animeRole != null) addRoleToMember(guild, member, animeRole);
                 break;
             case "🐱":
-                Role animalsRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("animals")).findFirst().orElse(null);
-                if (animalsRole != null) event.getGuild().addRoleToMember(target, animalsRole).queue();
+                Role animalsRole = findRole(roles, "animals");
+                if (animalsRole != null) addRoleToMember(guild, member, animalsRole);
                 break;
             case "🛑":
-                Role nnsfwRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("nnsfw")).findFirst().orElse(null);
-                if (nnsfwRole != null) event.getGuild().addRoleToMember(target, nnsfwRole).queue();
+                Role nnsfwRole = findRole(roles, "nnsfw");
+                if (nnsfwRole != null) addRoleToMember(guild, member, nnsfwRole);
                 break;
             case "🎭":
-                Role roleplayRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("roleplay")).findFirst().orElse(null);
-                if (roleplayRole != null) event.getGuild().addRoleToMember(target, roleplayRole).queue();
+                Role roleplayRole = findRole(roles, "roleplay");
+                if (roleplayRole != null) addRoleToMember(guild, member, roleplayRole);
                 break;
             case "⛏":
-                Role minecraftRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("minecraft")).findFirst().orElse(null);
-                if (minecraftRole != null) event.getGuild().addRoleToMember(target, minecraftRole).queue();
+                Role minecraftRole = findRole(roles, "minecraft");
+                if (minecraftRole != null) addRoleToMember(guild, member, minecraftRole);
                 break;
             case "🍂":
-                Role animalCrossingRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("animal crossing")).findFirst().orElse(null);
-                if (animalCrossingRole != null) event.getGuild().addRoleToMember(target, animalCrossingRole).queue();
+                Role animalCrossingRole = findRole(roles, "animal crossing");
+                if (animalCrossingRole != null) addRoleToMember(guild, member, animalCrossingRole);
                 break;
             case "🥚":
-                Role pokemonRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("pokemon")).findFirst().orElse(null);
-                if (pokemonRole != null) event.getGuild().addRoleToMember(target, pokemonRole).queue();
+                Role pokemonRole = findRole(roles, "pokemon");
+                if (pokemonRole != null) addRoleToMember(guild, member, pokemonRole);
                 break;
             case "⚔":
-                Role runescapeRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("runescape")).findFirst().orElse(null);
-                if (runescapeRole != null) event.getGuild().addRoleToMember(target, runescapeRole).queue();
+                Role runescapeRole = findRole(roles, "runescape");
+                if (runescapeRole != null) addRoleToMember(guild, member, runescapeRole);
                 break;
             case "🍿":
-                Role movieStreamsRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("movie streams")).findFirst().orElse(null);
-                if (movieStreamsRole != null) event.getGuild().addRoleToMember(target, movieStreamsRole).queue();
+                Role movieStreamsRole = findRole(roles, "movie streams");
+                if (movieStreamsRole != null) addRoleToMember(guild, member, movieStreamsRole);
                 break;
             case "👾":
-                Role gameStreamsRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("game streams")).findFirst().orElse(null);
-                if (gameStreamsRole != null) event.getGuild().addRoleToMember(target, gameStreamsRole).queue();
+                Role gameStreamsRole = findRole(roles, "game streams");
+                if (gameStreamsRole != null) addRoleToMember(guild, member, gameStreamsRole);
                 break;
             default:
                 event.getReaction().removeReaction().queue();
@@ -91,65 +96,80 @@ public class VerifyRolesEvents extends ListenerAdapter {
     }
 
     private static void removeCategoryRoles (MessageReactionRemoveEvent event) {
-        Member target = event.getMember();
-        if (target == null) return;
+        Member member = event.getMember();
+        if (member == null) return;
+
+        Guild guild = event.getGuild();
+        List<Role> roles = guild.getRoles();
 
         switch (event.getReactionEmote().getName()) {
             case "😂":
-                Role memesRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("memes")).findFirst().orElse(null);
-                if (memesRole != null) event.getGuild().removeRoleFromMember(target, memesRole).queue();
+                Role memesRole = findRole(roles, "memes");
+                if (memesRole != null) removeRoleFromMember(guild, member, memesRole);
                 break;
             case "🎮":
-                Role gamesRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("games")).findFirst().orElse(null);
-                if (gamesRole != null) event.getGuild().removeRoleFromMember(target, gamesRole).queue();
+                Role gamesRole = findRole(roles, "games");
+                if (gamesRole != null) removeRoleFromMember(guild, member, gamesRole);
                 break;
             case "🎵":
-                Role musicRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("music")).findFirst().orElse(null);
-                if (musicRole != null) event.getGuild().removeRoleFromMember(target, musicRole).queue();
+                Role musicRole = findRole(roles, "music");
+                if (musicRole != null) removeRoleFromMember(guild, member, musicRole);
                 break;
             case "💢":
-                Role animeRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("anime")).findFirst().orElse(null);
-                if (animeRole != null) event.getGuild().removeRoleFromMember(target, animeRole).queue();
+                Role animeRole = findRole(roles, "anime");
+                if (animeRole != null) removeRoleFromMember(guild, member, animeRole);
                 break;
             case "🐱":
-                Role animalsRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("animals")).findFirst().orElse(null);
-                if (animalsRole != null) event.getGuild().removeRoleFromMember(target, animalsRole).queue();
+                Role animalsRole = findRole(roles, "animals");
+                if (animalsRole != null) removeRoleFromMember(guild, member, animalsRole);
                 break;
             case "🛑":
-                Role nnsfwRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("nnsfw")).findFirst().orElse(null);
-                if (nnsfwRole != null) event.getGuild().removeRoleFromMember(target, nnsfwRole).queue();
+                Role nnsfwRole = findRole(roles, "nnsfw");
+                if (nnsfwRole != null) removeRoleFromMember(guild, member, nnsfwRole);
                 break;
             case "🎭":
-                Role roleplayRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("roleplay")).findFirst().orElse(null);
-                if (roleplayRole != null) event.getGuild().removeRoleFromMember(target, roleplayRole).queue();
+                Role roleplayRole = findRole(roles, "roleplay");
+                if (roleplayRole != null) removeRoleFromMember(guild, member, roleplayRole);
                 break;
             case "⛏":
-                Role minecraftRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("minecraft")).findFirst().orElse(null);
-                if (minecraftRole != null) event.getGuild().removeRoleFromMember(target, minecraftRole).queue();
+                Role minecraftRole = findRole(roles, "minecraft");
+                if (minecraftRole != null) removeRoleFromMember(guild, member, minecraftRole);
                 break;
             case "🍂":
-                Role animalCrossingRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("animal crossing")).findFirst().orElse(null);
-                if (animalCrossingRole != null) event.getGuild().removeRoleFromMember(target, animalCrossingRole).queue();
+                Role animalCrossingRole = findRole(roles, "animal crossing");
+                if (animalCrossingRole != null) removeRoleFromMember(guild, member, animalCrossingRole);
                 break;
             case "🥚":
-                Role pokemonRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("pokemon")).findFirst().orElse(null);
-                if (pokemonRole != null) event.getGuild().removeRoleFromMember(target, pokemonRole).queue();
+                Role pokemonRole = findRole(roles, "pokemon");
+                if (pokemonRole != null) removeRoleFromMember(guild, member, pokemonRole);
                 break;
             case "⚔":
-                Role runescapeRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("runescape")).findFirst().orElse(null);
-                if (runescapeRole != null) event.getGuild().removeRoleFromMember(target, runescapeRole).queue();
+                Role runescapeRole = findRole(roles, "runescape");
+                if (runescapeRole != null) removeRoleFromMember(guild, member, runescapeRole);
                 break;
             case "🍿":
-                Role movieStreamsRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("movie streams")).findFirst().orElse(null);
-                if (movieStreamsRole != null) event.getGuild().removeRoleFromMember(target, movieStreamsRole).queue();
+                Role movieStreamsRole = findRole(roles, "movie streams");
+                if (movieStreamsRole != null) removeRoleFromMember(guild, member, movieStreamsRole);
                 break;
             case "👾":
-                Role gameStreamsRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("game streams")).findFirst().orElse(null);
-                if (gameStreamsRole != null) event.getGuild().removeRoleFromMember(target, gameStreamsRole).queue();
+                Role gameStreamsRole = findRole(roles, "game streams");
+                if (gameStreamsRole != null) removeRoleFromMember(guild, member, gameStreamsRole);
                 break;
             default:
                 event.getReaction().removeReaction().queue();
                 break;
         }
+    }
+
+    private static Role findRole(List<Role> availableRoles, String roleName) {
+        return availableRoles.stream().filter(role -> role.getName().toLowerCase().contains(roleName)).findFirst().orElse(null);
+    }
+
+    private static void addRoleToMember(Guild guild, Member member, Role role) {
+        guild.addRoleToMember(member, role).queue();
+    }
+
+    private static void removeRoleFromMember(Guild guild, Member member, Role role) {
+        guild.removeRoleFromMember(member, role).queue();
     }
 }

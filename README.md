@@ -12,6 +12,7 @@ The following are commands for Krypto. To run a command, prefix the command with
 
 ### Info
 
+* `help` - Get help with commands!
 * `hello` - Say hello to Krypto!
 * `about` - View information about Krypto.
 * `serverinfo` - View information about your server.
@@ -23,7 +24,7 @@ The following are commands for Krypto. To run a command, prefix the command with
 * `level <@user>` - View the level of a user.
 * `lb` - Display the level leaderboard.
 * `lb <size>` - Display the level leaderboard up to the given size.
-* `poll create <question> <option> <option>...` - Create a poll.
+* `poll create <question>;<option>;<option>...` - Create a poll.
   * Creates a poll with the given options (11 max).
 * `ping` - View bot latency.
 * `ping fancy` - View bot latency... with style!

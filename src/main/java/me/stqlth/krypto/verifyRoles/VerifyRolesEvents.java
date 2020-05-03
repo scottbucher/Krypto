@@ -32,45 +32,49 @@ public class VerifyRolesEvents extends ListenerAdapter {
         if (target == null) return;
 
         switch (event.getReactionEmote().getName()) {
-            case "\uD83C\uDFAE":
+            case "😂":
+                Role memesRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("memes")).findFirst().orElse(null);
+                if (memesRole != null) event.getGuild().addRoleToMember(target, memesRole).queue();
+                break;
+            case "🎮":
                 Role gamesRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("games")).findFirst().orElse(null);
                 if (gamesRole != null) event.getGuild().addRoleToMember(target, gamesRole).queue();
                 break;
-            case "\uD83E\uDD5A":
-                Role pokemonRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("pokémon")).findFirst().orElse(null);
-                if (pokemonRole != null) event.getGuild().addRoleToMember(target, pokemonRole).queue();
+            case "🎵":
+                Role musicRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("music")).findFirst().orElse(null);
+                if (musicRole != null) event.getGuild().addRoleToMember(target, musicRole).queue();
                 break;
-            case "\uD83C\uDFAD":
-                Role roleplayRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("roleplay")).findFirst().orElse(null);
-                if (roleplayRole != null) event.getGuild().addRoleToMember(target, roleplayRole).queue();
+            case "💢":
+                Role animeRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("anime")).findFirst().orElse(null);
+                if (animeRole != null) event.getGuild().addRoleToMember(target, animeRole).queue();
                 break;
-            case "\uD83D\uDC15":
+            case "🐱":
                 Role animalsRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("animals")).findFirst().orElse(null);
                 if (animalsRole != null) event.getGuild().addRoleToMember(target, animalsRole).queue();
                 break;
-            case "\u2B50":
-                Role levelingRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("leveling")).findFirst().orElse(null);
-                if (levelingRole != null) event.getGuild().addRoleToMember(target, levelingRole).queue();
+            case "🛑":
+                Role nnsfwRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("nnsfw")).findFirst().orElse(null);
+                if (nnsfwRole != null) event.getGuild().addRoleToMember(target, nnsfwRole).queue();
                 break;
-            case "\uD83D\uDCCA":
-                Role pollsRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("polls")).findFirst().orElse(null);
-                if (pollsRole != null) event.getGuild().addRoleToMember(target, pollsRole).queue();
+            case "🎭":
+                Role roleplayRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("roleplay")).findFirst().orElse(null);
+                if (roleplayRole != null) event.getGuild().addRoleToMember(target, roleplayRole).queue();
                 break;
-            case "\uD83C\uDF7F":
-                Role movienightRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("movienight")).findFirst().orElse(null);
-                if (movienightRole != null) event.getGuild().addRoleToMember(target, movienightRole).queue();
+            case "⛏":
+                Role minecraftRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("minecraft")).findFirst().orElse(null);
+                if (minecraftRole != null) event.getGuild().addRoleToMember(target, minecraftRole).queue();
                 break;
-            case "\uD83D\uDCFA":
-                Role streamRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("stream")).findFirst().orElse(null);
-                if (streamRole != null) event.getGuild().addRoleToMember(target, streamRole).queue();
+            case "🍂":
+                Role animalCrossingRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("animal crossing")).findFirst().orElse(null);
+                if (animalCrossingRole != null) event.getGuild().addRoleToMember(target, animalCrossingRole).queue();
                 break;
-            case "\u26A0":
-                Role nsfwRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("nsfw")).findFirst().orElse(null);
-                if (nsfwRole != null) event.getGuild().addRoleToMember(target, nsfwRole).queue();
+            case "🥚":
+                Role pokemonRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("pokemon")).findFirst().orElse(null);
+                if (pokemonRole != null) event.getGuild().addRoleToMember(target, pokemonRole).queue();
                 break;
-            case "\uD83C\uDFB5":
-                Role musicRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("music")).findFirst().orElse(null);
-                if (musicRole != null) event.getGuild().addRoleToMember(target, musicRole).queue();
+            case "⚔":
+                Role runescapeRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("runescape")).findFirst().orElse(null);
+                if (runescapeRole != null) event.getGuild().addRoleToMember(target, runescapeRole).queue();
                 break;
             default:
                 event.getReaction().removeReaction().queue();
@@ -83,45 +87,49 @@ public class VerifyRolesEvents extends ListenerAdapter {
         if (target == null) return;
 
         switch (event.getReactionEmote().getName()) {
-            case "\uD83C\uDFAE":
+            case "😂":
+                Role memesRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("memes")).findFirst().orElse(null);
+                if (memesRole != null) event.getGuild().removeRoleFromMember(target, memesRole).queue();
+                break;
+            case "🎮":
                 Role gamesRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("games")).findFirst().orElse(null);
                 if (gamesRole != null) event.getGuild().removeRoleFromMember(target, gamesRole).queue();
                 break;
-            case "\uD83E\uDD5A":
-                Role pokemonRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("pokémon")).findFirst().orElse(null);
-                if (pokemonRole != null) event.getGuild().removeRoleFromMember(target, pokemonRole).queue();
+            case "🎵":
+                Role musicRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("music")).findFirst().orElse(null);
+                if (musicRole != null) event.getGuild().removeRoleFromMember(target, musicRole).queue();
                 break;
-            case "\uD83C\uDFAD":
-                Role roleplayRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("roleplay")).findFirst().orElse(null);
-                if (roleplayRole != null) event.getGuild().removeRoleFromMember(target, roleplayRole).queue();
+            case "💢":
+                Role animeRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("anime")).findFirst().orElse(null);
+                if (animeRole != null) event.getGuild().removeRoleFromMember(target, animeRole).queue();
                 break;
-            case "\uD83D\uDC15":
+            case "🐱":
                 Role animalsRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("animals")).findFirst().orElse(null);
                 if (animalsRole != null) event.getGuild().removeRoleFromMember(target, animalsRole).queue();
                 break;
-            case "\u2B50":
-                Role levelingRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("leveling")).findFirst().orElse(null);
-                if (levelingRole != null) event.getGuild().removeRoleFromMember(target, levelingRole).queue();
+            case "🛑":
+                Role nnsfwRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("nnsfw")).findFirst().orElse(null);
+                if (nnsfwRole != null) event.getGuild().removeRoleFromMember(target, nnsfwRole).queue();
                 break;
-            case "\uD83D\uDCCA":
-                Role pollsRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("polls")).findFirst().orElse(null);
-                if (pollsRole != null) event.getGuild().removeRoleFromMember(target, pollsRole).queue();
+            case "🎭":
+                Role roleplayRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("roleplay")).findFirst().orElse(null);
+                if (roleplayRole != null) event.getGuild().removeRoleFromMember(target, roleplayRole).queue();
                 break;
-            case "\uD83C\uDF7F":
-                Role movienightRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("movienight")).findFirst().orElse(null);
-                if (movienightRole != null) event.getGuild().removeRoleFromMember(target, movienightRole).queue();
+            case "⛏":
+                Role minecraftRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("minecraft")).findFirst().orElse(null);
+                if (minecraftRole != null) event.getGuild().removeRoleFromMember(target, minecraftRole).queue();
                 break;
-            case "\uD83D\uDCFA":
-                Role streamRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("stream")).findFirst().orElse(null);
-                if (streamRole != null) event.getGuild().removeRoleFromMember(target, streamRole).queue();
+            case "🍂":
+                Role animalCrossingRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("animal crossing")).findFirst().orElse(null);
+                if (animalCrossingRole != null) event.getGuild().removeRoleFromMember(target, animalCrossingRole).queue();
                 break;
-            case "\u26A0":
-                Role nsfwRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("nsfw")).findFirst().orElse(null);
-                if (nsfwRole != null) event.getGuild().removeRoleFromMember(target, nsfwRole).queue();
+            case "🥚":
+                Role pokemonRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("pokemon")).findFirst().orElse(null);
+                if (pokemonRole != null) event.getGuild().removeRoleFromMember(target, pokemonRole).queue();
                 break;
-            case "\uD83C\uDFB5":
-                Role musicRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("music")).findFirst().orElse(null);
-                if (musicRole != null) event.getGuild().removeRoleFromMember(target, musicRole).queue();
+            case "⚔":
+                Role runescapeRole = event.getGuild().getRoles().stream().filter(role -> role.getName().toLowerCase().contains("runescape")).findFirst().orElse(null);
+                if (runescapeRole != null) event.getGuild().removeRoleFromMember(target, runescapeRole).queue();
                 break;
             default:
                 event.getReaction().removeReaction().queue();
